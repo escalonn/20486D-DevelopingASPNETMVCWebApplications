@@ -1,0 +1,35 @@
+﻿<Window x:Class="DesignProject.SinglePhotoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesignProject"
+        mc:Ignorable="d"
+        Title="SinglePhotoView" Height="1100" Width="500" WindowStyle="None">
+    <Grid>
+        <Label Content="Adventure Works Photo Sharing" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <Canvas HorizontalAlignment="Left" Height="40" Margin="10,52,0,0" VerticalAlignment="Top" Width="400" Background="#FF96AFCF">
+            <Button Content="Home" Canvas.Left="10" Canvas.Top="10" Width="75" Background="#FF1F477D" Foreground="White"/>
+            <Button Content="Gallery" Canvas.Left="90" Canvas.Top="10" Width="75" Background="#FF1F477D" Foreground="White"/>
+            <Button Content="Add a Photo" Canvas.Left="170" Canvas.Top="10" Width="75" Background="#FF1F477D" Foreground="White"/>
+            <Button Content="Slideshow" Canvas.Left="250" Canvas.Top="10" Width="75" Background="#FF1F477D" Foreground="White"/>
+        </Canvas>
+        <Label Content="Title" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <Label Content="By: Owner" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top"/>
+        <Image HorizontalAlignment="Left" Height="240" Margin="10,170,0,0" VerticalAlignment="Top" Width="400" Source="photo.jpg"/>
+        <Label Content="Description" HorizontalAlignment="Left" Margin="10,415,0,0" VerticalAlignment="Top"/>
+        <Label Content="Photo Description..." HorizontalAlignment="Left" Margin="10,446,0,0" VerticalAlignment="Top" Width="300" Height="150" BorderBrush="#FF96AFCF" BorderThickness="2"/>
+        <Label Content="Comments:" HorizontalAlignment="Left" Margin="10,601,0,0" VerticalAlignment="Top"/>
+        <Canvas HorizontalAlignment="Left" Height="130" Margin="10,632,0,0" VerticalAlignment="Top" Width="300" Background="#FF96AFCF">
+            <Label Content="From:" Canvas.Left="10" Canvas.Top="10"/>
+            <Label Content="Subject:" Canvas.Left="10" Canvas.Top="41"/>
+            <Label Content="Body:" Canvas.Left="10" Canvas.Top="72"/>
+        </Canvas>
+        <Canvas HorizontalAlignment="Left" Height="130" Margin="10,767,0,0" VerticalAlignment="Top" Width="300" Background="#FF96AFCF">
+            <Label Content="From:" Canvas.Left="10" Canvas.Top="10"/>
+            <Label Content="Subject:" Canvas.Left="10" Canvas.Top="41"/>
+            <Label Content="Body:" Canvas.Left="10" Canvas.Top="72"/>
+        </Canvas>
+        <TextBlock HorizontalAlignment="Left" Margin="10,902,0,0" TextWrapping="Wrap" Text="Add a Comment" VerticalAlignment="Top" Foreground="Blue" TextDecorations="Underline"/>
+    </Grid>
+</Window>

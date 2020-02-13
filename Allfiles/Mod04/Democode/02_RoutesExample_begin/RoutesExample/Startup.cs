@@ -18,7 +18,17 @@ namespace RoutesExample
 
         public void Configure(IApplicationBuilder app)
         {
-            
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "firstRoute",
+                    template: "{controller}/{action}/{num:int}");
+
+                routes.MapRoute(
+                    name: "secondRoute",
+                    template: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "Home", action = "Index" });
+            });
         }
     }
 }

@@ -21,7 +21,16 @@ namespace WorldJourney
         public void Configure(IApplicationBuilder app)
         {
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("TravelerRoute", "{controller}/{action}/{name}",
+                    defaults: new { controller = "Traveler", action = "Index", name = "Nick Escalona" },
+                    constraints: new { name = "[A-Za-z ]+" });
+
+                routes.MapRoute("defaultRoute", "{controller}/{action}/{id?}",
+                    defaults: new { controller = "Home", action = "Index" },
+                    constraints: new { id = "[0-9]+" });
+            });
         }
     }
 }

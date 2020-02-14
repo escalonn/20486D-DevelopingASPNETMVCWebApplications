@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PartialViewsExample.Services
+﻿namespace PartialViewsExample.Services
 {
     public class Person
     {
@@ -14,6 +9,10 @@ namespace PartialViewsExample.Services
 
         public Person(string firstName, string lastName, string address, string phoneNumber)
         {
+            FirstName = firstName;
+            LastName = lastName;
+            Address = address;
+            PhoneNumber = phoneNumber;
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
-
 <!DOCTYPE html>
 
 <html>
@@ -19,6 +17,8 @@
             <tr>
                 @for (int columnIndex = 0; columnIndex < ViewBag.Columns; columnIndex++)
                 {
+                    int cardIndex = columnIndex + (rowIndex * ViewBag.Columns);
+                    @await Html.PartialAsync("_CardDesign", cardIndex);
                 }
             </tr>
         }

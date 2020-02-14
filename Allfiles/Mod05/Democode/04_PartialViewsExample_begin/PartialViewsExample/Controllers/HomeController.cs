@@ -20,6 +20,7 @@ namespace PartialViewsExample.Controllers
         {
             ViewBag.Rows = 5;
             ViewBag.Columns = 3;
+            ViewBag.People = _personProvider.PersonList;
             return View();
         }
     }

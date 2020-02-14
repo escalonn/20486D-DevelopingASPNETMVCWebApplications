@@ -20,7 +20,7 @@
                 @for (int columnIndex = 0; columnIndex < ViewBag.Columns; columnIndex++)
                 {
                     int cardIndex = columnIndex + (rowIndex * ViewBag.Columns);
-                    @await Html.PartialAsync("_CardDesign", cardIndex);
+                    @await Component.InvokeAsync("PersonCard", cardIndex);
                 }
             </tr>
         }

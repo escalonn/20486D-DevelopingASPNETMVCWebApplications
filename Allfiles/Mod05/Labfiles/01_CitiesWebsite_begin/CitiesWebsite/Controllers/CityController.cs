@@ -1,31 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CitiesWebsite.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CitiesWebsite.Controllers
 {
     public class CityController : Controller
     {
-        public CityController()
-        {
+        private readonly ICityProvider _cities;
 
+        public CityController(ICityProvider cities)
+        {
+            _cities = cities;
         }
 
         public IActionResult ShowCities()
         {
+            ViewBag.Cities = _cities;
             return View();
         }
 
-        public IActionResult ShowDataForCity()
+        public IActionResult ShowDataForCity(string cityName)
         {
+            ViewBag.City = _cities[cityName];
             return View();
         }
 
         public IActionResult GetImage(string cityName)
         {
-            return Content(cityName);
+            return File($@"images\{cityName}.jpg", contentType: "image/jpeg");
         }
     }
 }

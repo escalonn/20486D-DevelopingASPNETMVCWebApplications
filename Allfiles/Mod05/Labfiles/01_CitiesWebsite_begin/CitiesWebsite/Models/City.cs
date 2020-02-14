@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CitiesWebsite.Models
+﻿namespace CitiesWebsite.Models
 {
     public class City
     {
@@ -14,7 +9,10 @@ namespace CitiesWebsite.Models
 
         public City(string country, string cityName, string timeZone, CityPopulation population)
         {
-
+            Country = country;
+            Name = cityName;
+            TimeZone = timeZone;
+            Population = population;
         }
     }
 }

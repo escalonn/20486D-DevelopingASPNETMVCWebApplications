@@ -1,8 +1,5 @@
-﻿using System;
+﻿using CitiesWebsite.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CitiesWebsite.Models;
 
 namespace CitiesWebsite.Services
 {

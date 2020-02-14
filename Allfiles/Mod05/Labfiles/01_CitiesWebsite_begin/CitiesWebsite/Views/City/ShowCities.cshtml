@@ -10,7 +10,7 @@
     <h1>Select City</h1>
     @foreach (var item in ViewBag.Cities)
     {
-        <a asp-action="ShowDataForCity" asp-route-cityname="@item.Key">@item.Key</a>
+        @await Component.InvokeAsync("City", item.Key)
     }
 </body>
 </html>

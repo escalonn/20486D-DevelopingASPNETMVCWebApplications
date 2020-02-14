@@ -14,5 +14,11 @@
 <body>
     <h1>Employees</h1>
     <p>Please select an employee from the list:</p>
+    @foreach (string currentName in ViewBag.EmployeeNames)
+    {
+        <div>
+            @Html.ActionLink(currentName, actionName: "Details", routeValues: new { employeeName = currentName })
+        </div>
+    }
 </body>
 </html>

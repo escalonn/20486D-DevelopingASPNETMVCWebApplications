@@ -14,6 +14,7 @@
         <span>
             <img src="@Url.Action("GetImage", values: new { cityName = ViewBag.City.Name })">
         </span>
+        @await Html.PartialAsync("_CityPopulation")
         <a asp-action="ShowCities">Back</a>
     </div>
 </body>

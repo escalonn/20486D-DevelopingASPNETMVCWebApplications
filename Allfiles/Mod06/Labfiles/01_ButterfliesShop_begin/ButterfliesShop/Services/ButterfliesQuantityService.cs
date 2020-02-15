@@ -1,8 +1,5 @@
 ﻿using ButterfliesShop.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ButterfliesShop.Services
 {
@@ -32,8 +29,7 @@ namespace ButterfliesShop.Services
 
         public int? GetButterflyFamilyQuantity(Family family)
         {
-            int? quantity;
-            if (ButterfliesQuantityDictionary.TryGetValue(family, out quantity))
+            if (ButterfliesQuantityDictionary.TryGetValue(family, out var quantity))
             {
                 return quantity;
             }

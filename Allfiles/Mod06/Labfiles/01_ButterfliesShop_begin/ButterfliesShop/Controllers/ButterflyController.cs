@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ButterfliesShop.Models;
+﻿using ButterfliesShop.Models;
 using ButterfliesShop.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace ButterfliesShop.Controllers
 {
     public class ButterflyController : Controller
     {
-        private IDataService _data;
-        private IHostingEnvironment _environment;
-        private IButterfliesQuantityService _butterfliesQuantityService;
+        private readonly IDataService _data;
+        private readonly IHostingEnvironment _environment;
+        private readonly IButterfliesQuantityService _butterfliesQuantityService;
 
         public ButterflyController(IDataService data, IHostingEnvironment environment, IButterfliesQuantityService butterfliesQuantityService)
         {
@@ -33,6 +33,47 @@ namespace ButterfliesShop.Controllers
                     _butterfliesQuantityService.AddButterfliesQuantityData(butterfly);
                 }
             }
+        }
+
+        public IActionResult Index()
+        {
+            var indexViewModel = new IndexViewModel { Butterflies = _data.ButterfliesList };
+            return View(indexViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Butterfly butterfly)
+        {
+            var lastButterfly = _data.ButterfliesList.LastOrDefault();
+
+            butterfly.CreatedDate = DateTime.Today;
+
+            if (butterfly.PhotoAvatar != null && butterfly.PhotoAvatar.Length > 0)
+            {
+                butterfly.ImageMimeType = butterfly.PhotoAvatar.ContentType;
+                butterfly.ImageName = Path.GetFileName(butterfly.PhotoAvatar.FileName);
+
+                butterfly.Id = lastButterfly.Id + 1;
+                _butterfliesQuantityService.AddButterfliesQuantityData(butterfly);
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    butterfly.PhotoAvatar.CopyTo(memoryStream);
+                    butterfly.PhotoFile = memoryStream.ToArray();
+                }
+
+                _data.AddButterfly(butterfly);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(butterfly);
         }
 
         public IActionResult GetImage(int id)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using DataAnnotationsExample.Validators;
 
 namespace DataAnnotationsExample.Models
 {
@@ -21,6 +22,9 @@ namespace DataAnnotationsExample.Models
         [Display(Name = "Birthdate:")]
         [DataType(DataType.Date)]
         public DateTime Birthdate { get; set; }
+
+        [Display(Name = "Are you a university student?")]
+        [InUniversityValidation]
         public bool UniversityStudent { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ZooSite.Data;
+using ZooSite.Middleware;
 
 namespace ZooSite
 {
@@ -23,12 +25,13 @@ namespace ZooSite
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, ZooContext zooContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ZooContext zooContext)
         {
             zooContext.Database.EnsureDeleted();
             zooContext.Database.EnsureCreated();
 
             app.UseStaticFiles();
+            app.UseNodeModules(env.ContentRootPath);
 
             app.UseMvc(routes =>
             {

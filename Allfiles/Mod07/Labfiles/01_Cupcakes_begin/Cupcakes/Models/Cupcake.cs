@@ -40,5 +40,8 @@ namespace Cupcakes.Models
         public int? BakeryId { get; set; }
 
         public string Bakery { get; set; }
+
+        [Display(Name = "Caloric Value:")]
+        public int CaloricValue { get; set; }
     }
 }

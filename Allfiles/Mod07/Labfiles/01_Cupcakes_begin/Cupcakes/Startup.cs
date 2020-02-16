@@ -19,18 +19,15 @@ namespace Cupcakes
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CupcakeContext>(options =>
-                options.UseSqlite("Data Source=cupcake.db"));
+                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<ICupcakeRepository, CupcakeRepository>();
 
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, CupcakeContext cupcakeContext)
+        public void Configure(IApplicationBuilder app)
         {
-            cupcakeContext.Database.EnsureDeleted();
-            cupcakeContext.Database.EnsureCreated();
-
             app.UseStaticFiles();
 
             app.UseMvc(routes =>

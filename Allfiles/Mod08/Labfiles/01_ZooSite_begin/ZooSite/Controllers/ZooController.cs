@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using ZooSite.Data;
 using ZooSite.Models;
 
@@ -12,13 +9,11 @@ namespace ZooSite.Controllers
 {
     public class ZooController : Controller
     {
-        private ZooContext _context;
-        private IHostingEnvironment _environment;
+        private readonly ZooContext _context;
 
-        public ZooController(ZooContext context, IHostingEnvironment environment)
+        public ZooController(ZooContext context)
         {
             _context = context;
-            _environment = environment;
         }
 
         public IActionResult Index()
@@ -54,27 +49,23 @@ namespace ZooSite.Controllers
             return View();
         }
 
-        public IActionResult GetImage(int photoId)
+        public IActionResult GetImage(int photoId, [FromServices] IHostingEnvironment environment)
         {
-            Photo requestedPhoto = _context.Photos.FirstOrDefault(p => p.PhotoID == photoId);
-            if (requestedPhoto != null)
+            if (_context.Photos.FirstOrDefault(p => p.PhotoID == photoId) is Photo requestedPhoto)
             {
-                string webRootpath = _environment.WebRootPath;
-                string folderPath = "\\images\\";
-                string fullPath = webRootpath + folderPath + requestedPhoto.PhotoFileName;
+                string webRootPath = environment.WebRootPath;
+                string folderPath = @"\images\";
+                string fullPath = webRootPath + folderPath + requestedPhoto.PhotoFileName;
 
-                FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
+                var fileOnDisk = new FileStream(fullPath, FileMode.Open);
                 byte[] fileBytes;
-                using (BinaryReader br = new BinaryReader(fileOnDisk))
+                using (var br = new BinaryReader(fileOnDisk))
                 {
                     fileBytes = br.ReadBytes((int)fileOnDisk.Length);
                 }
                 return File(fileBytes, requestedPhoto.ImageMimeType);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
     }
 }

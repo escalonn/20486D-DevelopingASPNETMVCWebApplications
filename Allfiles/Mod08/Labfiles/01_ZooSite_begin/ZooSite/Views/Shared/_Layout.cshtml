@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width">
+  <title>@ViewBag.Title</title>
+</head>
+<body>
+  <ul class="nav">
+    <li><a asp-controller="Zoo" asp-action="Index">Attractions</a></li>
+    <li><a asp-controller="Zoo" asp-action="VisitorDetails">Visitor Info</a></li>
+    <li><a asp-controller="Zoo" asp-action="BuyTickets">Tickets</a></li>
+  </ul>
+  <div class="header-container">
+    <h1 class="content">Welcome to Zoo Center</h1>
+    <div class="slider-buttons">
+      <img src="~/images/prevArrow.png" class="prev" onclick="prevImage()">
+      <img src="~/images/nextArrow.png" class="next" onclick="nextImage()">
+    </div>
+  </div>
+  <div>
+    @RenderBody()
+  </div>
+  @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using EntityFrameworkExample.Data;
+using Microsoft.EntityFrameworkCore;
+using EntityFrameworkExample.Repositories;
 
 namespace EntityFrameworkExample
 {
@@ -21,11 +24,19 @@ namespace EntityFrameworkExample
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<PersonContext>(options =>
+                  options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IRepository, MyRepository>();
+
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, PersonContext personContext)
         {
+            personContext.Database.EnsureDeleted();
+            personContext.Database.EnsureCreated();
+
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {

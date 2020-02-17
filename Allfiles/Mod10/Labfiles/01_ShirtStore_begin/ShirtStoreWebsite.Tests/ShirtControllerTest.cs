@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using ShirtStoreWebsite.Controllers;
 using ShirtStoreWebsite.Models;
 using ShirtStoreWebsite.Services;
@@ -16,7 +18,8 @@ namespace ShirtStoreWebsite.Tests
         public void IndexModelShouldContainAllShirts()
         {
             IShirtRepository fakeShirtRepository = new FakeShirtRepository();
-            var shirtController = new ShirtController(fakeShirtRepository);
+            var mockLogger = new Mock<ILogger<ShirtController>>();
+            var shirtController = new ShirtController(fakeShirtRepository, mockLogger.Object);
 
             var viewResult = shirtController.Index() as ViewResult;
 

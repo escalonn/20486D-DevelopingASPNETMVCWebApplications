@@ -28,18 +28,18 @@ $(function () {
     var iceCreamImage = hashtableImages[iceCreamFlavor];
 
     if (calc && iceCreamImage) {
-      $('#totalAmount').html(calc + '$');
+      $('#total-amount').html('$' + calc.toFixed(2));
       var src = '/images/' + iceCreamImage;
-      $('#iceCreamImage').attr('src', src);
-      $('#formButton').prop('disabled', false);
+      $('#ice-cream-image').prop('src', src);
+      $('#form-button').prop('disabled', false);
     } else {
       UnableToPurchase();
     }
   });
 
   function UnableToPurchase() {
-    $('#totalAmount').empty();
-    $('#iceCreamImage').attr('src', '/images/empty.jpg');
-    $('#formButton').prop('disabled', true);
+    $('#total-amount').empty();
+    $('#ice-cream-image').prop('src', '/images/empty.jpg');
+    $('#form-button').prop('disabled', true);
   }
 });

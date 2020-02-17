@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,8 +27,17 @@ namespace ShirtStoreWebsite
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, ShirtContext shirtContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ShirtContext shirtContext)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/error.html");
+            }
+
             shirtContext.Database.EnsureDeleted();
             shirtContext.Database.EnsureCreated();
 

@@ -15,7 +15,7 @@ namespace ErrorHandlingExample.Services
             divisionResult.DividedNumber = number;
             divisionResult.DividingNumbers = new List<int>();
 
-            for (int i = 0; i < (number / 2) + 1; i++)
+            for (int i = 1; i < (number / 2) + 1; i++)
             {
                 if (number % i == 0)
                 {

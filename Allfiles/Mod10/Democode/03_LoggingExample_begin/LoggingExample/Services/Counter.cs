@@ -20,7 +20,16 @@ namespace LoggingExample.Services
 
         public void IncrementNumberCount(int number)
         {
-            NumberCounter[number]++;
+            if (NumberCounter.ContainsKey(number))
+            {
+                NumberCounter[number]++;
+                _logger.LogDebug($"The number of times the page was displayed for the number {number} was increased to {NumberCounter[number]}.");
+            }
+            else
+            {
+                NumberCounter.Add(number, 1);
+                _logger.LogDebug($"The number {number} was added to the page display count dictionary.");
+            }
         }
     }
 }

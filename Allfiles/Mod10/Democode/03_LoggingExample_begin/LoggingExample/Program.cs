@@ -19,6 +19,23 @@ namespace LoggingExample
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+            .ConfigureLogging((hostingContext, logging) =>
+            {
+                var env = hostingContext.HostingEnvironment;
+                var config = hostingContext.Configuration.GetSection("Logging");
+
+                logging.ClearProviders();
+
+                if (env.IsDevelopment())
+                {
+                    logging.AddConfiguration(config);
+                    logging.AddConsole();
+                }
+                else
+                {
+                    logging.AddFile(config);
+                }
+            })
                 .UseStartup<Startup>();
     }
 }

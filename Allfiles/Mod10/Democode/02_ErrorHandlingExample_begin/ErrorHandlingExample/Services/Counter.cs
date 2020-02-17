@@ -16,7 +16,14 @@ namespace ErrorHandlingExample.Services
 
         public void IncrementRequestPathCount(string requestPath)
         {
-            UrlCounter[requestPath]++;
+            if (UrlCounter.ContainsKey(requestPath))
+            {
+                UrlCounter[requestPath]++;
+            }
+            else
+            {
+                UrlCounter.Add(requestPath, 1);
+            }
         }
     }
 }

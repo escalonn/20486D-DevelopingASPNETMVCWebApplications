@@ -1,0 +1,6 @@
+2020-02-17T05:27:12.0949614-06:00 0HLTJJH86M5CU:00000004 [ERR] An error occured while trying to increase or retrieve the page display count. Number parameter is: 16 (d01e3e98)
+System.Collections.Generic.KeyNotFoundException: The given key '16' was not present in the dictionary.
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at LoggingExample.Services.Counter.IncrementNumberCount(Int32 number) in C:\revature\20486D\Allfiles\Mod10\Democode\03_LoggingExample_begin\LoggingExample\Services\Counter.cs:line 23
+   at LoggingExample.Controllers.HomeController.GetDividedNumber(Int32 id) in C:\revature\20486D\Allfiles\Mod10\Democode\03_LoggingExample_begin\LoggingExample\Controllers\HomeController.cs:line 35
+2020-02-17T05:29:28.2505943-06:00 0HLTJJII0S3KC:00000002 [ERR] GetDividedNumber - Success (e8890a0d)

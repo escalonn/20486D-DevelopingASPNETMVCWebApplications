@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IceCreamCompany.Models
 {
@@ -28,6 +25,6 @@ namespace IceCreamCompany.Models
         [HiddenInput(DisplayValue = false)]
         public string ImageMimeType { get; set; }
 
-        public virtual List<IceCreamFlavorsCustomers> IceCreamFlavors { get; set; }
+        public List<IceCreamFlavorsCustomers> IceCreamFlavors { get; set; }
     }
 }

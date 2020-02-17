@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IceCreamCompany.Models
 {
@@ -25,9 +22,9 @@ namespace IceCreamCompany.Models
         [Display(Name = "Phone"), DataType(DataType.PhoneNumber)]
         public long PhoneNumber { get; set; }
 
-        [Required(ErrorMessage = "Please enter your adress")]
+        [Required(ErrorMessage = "Please enter your address")]
         public string Address { get; set; }
 
-        public virtual List<IceCreamFlavorsCustomers> IceCreamFlavors { get; set; }
+        public List<IceCreamFlavorsCustomers> IceCreamFlavors { get; set; }
     }
 }

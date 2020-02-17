@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using IceCreamCompany.Data;
-using IceCreamCompany.Models;
+﻿using IceCreamCompany.Models;
 using IceCreamCompany.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IO;
 
 namespace IceCreamCompany.Controllers
 {
     public class IceCreamController : Controller
     {
-        private IRepository _repository;
-        private IHostingEnvironment _environment;
+        private readonly IRepository _repository;
 
-        public IceCreamController(IRepository repository, IHostingEnvironment environment)
+        public IceCreamController(IRepository repository)
         {
             _repository = repository;
-            _environment = environment;
         }
 
         public IActionResult Index()
@@ -50,27 +42,23 @@ namespace IceCreamCompany.Controllers
             return View();
         }
 
-        public IActionResult GetImage(int iceCreamId)
+        public IActionResult GetImage(int iceCreamId, [FromServices] IHostingEnvironment environment)
         {
-            IceCream requestedPhoto = _repository.GetIceCreamFlavorById(iceCreamId);
-            if (requestedPhoto != null)
+            if (_repository.GetIceCreamFlavorById(iceCreamId) is IceCream requestedPhoto)
             {
-                string webRootpath = _environment.WebRootPath;
-                string folderPath = "\\images\\";
-                string fullPath = webRootpath + folderPath + requestedPhoto.PhotoFileName;
+                string webRootPath = environment.WebRootPath;
+                string folderPath = "/images/";
+                string fullPath = webRootPath + folderPath + requestedPhoto.PhotoFileName;
 
-                FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
+                var fileOnDisk = new FileStream(fullPath, FileMode.Open);
                 byte[] fileBytes;
-                using (BinaryReader br = new BinaryReader(fileOnDisk))
+                using (var br = new BinaryReader(fileOnDisk))
                 {
                     fileBytes = br.ReadBytes((int)fileOnDisk.Length);
                 }
                 return File(fileBytes, requestedPhoto.ImageMimeType);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
     }
 }

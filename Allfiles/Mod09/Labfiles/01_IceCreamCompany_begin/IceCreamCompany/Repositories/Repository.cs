@@ -1,15 +1,13 @@
-﻿using System;
+﻿using IceCreamCompany.Data;
+using IceCreamCompany.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using IceCreamCompany.Data;
-using IceCreamCompany.Models;
 
 namespace IceCreamCompany.Repositories
 {
     public class Repository : IRepository
     {
-        private IceCreamContext _context;
+        private readonly IceCreamContext _context;
 
         public Repository(IceCreamContext context)
         {

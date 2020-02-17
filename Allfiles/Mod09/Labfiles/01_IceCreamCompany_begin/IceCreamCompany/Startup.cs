@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IceCreamCompany.Data;
+﻿using IceCreamCompany.Data;
 using IceCreamCompany.Repositories;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,10 +10,10 @@ namespace IceCreamCompany
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IRepository, Repository>();
-
             services.AddDbContext<IceCreamContext>(options =>
-                 options.UseSqlite("Data Source=iceCream.db"));
+                options.UseSqlite("Data Source=iceCream.db"));
+
+            services.AddTransient<IRepository, Repository>();
 
             services.AddMvc();
         }

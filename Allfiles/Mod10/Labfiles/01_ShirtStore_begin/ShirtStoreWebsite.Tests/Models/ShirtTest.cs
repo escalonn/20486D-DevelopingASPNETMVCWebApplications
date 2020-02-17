@@ -10,8 +10,10 @@ namespace ShirtStoreWebsite.Tests.Models
         public void IsGetFormattedTaxedPriceReturnsCorrectly()
         {
             var shirt = new Shirt { Price = 10F, Tax = 1.2F };
+
             string taxedPrice = shirt.FormattedTaxedPrice;
-            Assert.AreEqual("$12.00", taxedPrice);
+
+            Assert.AreEqual(expected: "$12.00", actual: taxedPrice);
         }
     }
 }

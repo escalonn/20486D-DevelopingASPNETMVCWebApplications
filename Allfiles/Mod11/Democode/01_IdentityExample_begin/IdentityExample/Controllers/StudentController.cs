@@ -10,6 +10,10 @@ namespace IdentityExample.Controllers
     {
         public IActionResult Index()
         {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
     }

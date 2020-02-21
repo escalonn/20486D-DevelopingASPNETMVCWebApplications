@@ -11,43 +11,52 @@
       <div class="form-group row">
         <label asp-for="FirstName" class="col-sm-4 col-form-label"></label>
         <div class="col-sm-6">
-          <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name" required>
+          <input asp-for="FirstName" class="form-control" placeholder="@Html.DisplayNameFor(model => model.FirstName)" required>
           <span asp-validation-for="FirstName"></span>
         </div>
       </div>
       <div class="form-group row">
         <label asp-for="LastName" class="col-sm-4 col-form-label"></label>
         <div class="col-sm-6">
-          <input asp-for="LastName" type="text" class="form-control" placeholder="Last Name" required>
+          <input asp-for="LastName" class="form-control" placeholder="@Html.DisplayNameFor(model => model.LastName)" required>
           <span asp-validation-for="LastName"></span>
         </div>
       </div>
       <div class="form-group row">
         <label asp-for="PhoneNumber" class="col-sm-4 col-form-label"></label>
         <div class="col-sm-6">
-          <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder="Phone Number" required>
+          <input asp-for="PhoneNumber" class="form-control" placeholder="@Html.DisplayNameFor(model => model.PhoneNumber)" required>
           <span asp-validation-for="PhoneNumber"></span>
         </div>
       </div>
       <div class="form-group row">
         <label asp-for="Email" class="col-sm-4 col-form-label"></label>
         <div class="col-sm-6">
-          <input asp-for="Email" type="email" class="form-control" placeholder="Email" required>
+          <input asp-for="Email" class="form-control" placeholder="@Html.DisplayNameFor(model => model.Email)" required>
           <span asp-validation-for="Email"></span>
         </div>
       </div>
       <div class="form-group row">
         <label asp-for="UserName" class="col-sm-4 col-form-label"></label>
         <div class="col-sm-6">
-          <input asp-for="UserName" type="tel" class="form-control" placeholder="User Name" required>
+          <input asp-for="UserName" class="form-control" placeholder="@Html.DisplayNameFor(model => model.UserName)" required>
           <span asp-validation-for="UserName"></span>
         </div>
       </div>
       <div class="form-group row">
         <label asp-for="Password" class="col-sm-4 col-form-label"></label>
         <div class="col-sm-6">
-          <input asp-for="Password" type="password" class="form-control" placeholder="Password" required>
+          <input asp-for="Password" type="password" class="form-control" placeholder="@Html.DisplayNameFor(model => model.Password)" required>
           <span asp-validation-for="Password"></span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label asp-for="RoleName" class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-6">
+          <select asp-for="RoleName" class="form-control">
+            <option selected>Member</option>
+            <option>Administrator</option>
+          </select>
         </div>
       </div>
       <div class="form-group row">

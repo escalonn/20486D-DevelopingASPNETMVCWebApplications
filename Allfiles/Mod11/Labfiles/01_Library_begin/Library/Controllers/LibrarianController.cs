@@ -2,12 +2,15 @@
 using System.Linq;
 using Library.Data;
 using Library.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Controllers
 {
+    [Authorize(Policy = "RequireEmail")]
+    [Authorize(Roles = "Administrator")]
     public class LibrarianController : Controller
     {
         private readonly LibraryContext _context;

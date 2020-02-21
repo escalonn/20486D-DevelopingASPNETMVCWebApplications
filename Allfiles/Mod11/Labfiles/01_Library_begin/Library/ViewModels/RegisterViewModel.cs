@@ -20,5 +20,9 @@ namespace Library.ViewModels
         [Required(ErrorMessage = "Please enter your email")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [Display(Name = "Role Name")]
+        [Required(ErrorMessage = "Please select a role")]
+        public string RoleName { get; set; }
     }
 }

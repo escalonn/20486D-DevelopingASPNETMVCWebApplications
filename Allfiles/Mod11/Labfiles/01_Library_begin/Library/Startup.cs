@@ -1,4 +1,5 @@
-﻿using Library.Data;
+﻿using System.Security.Claims;
+using Library.Data;
 using Library.Middleware;
 using Library.Models;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,11 @@ namespace Library
                 .AddEntityFrameworkStores<LibraryContext>();
 
             services.AddMvc();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireEmail", policy => policy.RequireClaim(ClaimTypes.Email));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, LibraryContext libraryContext)

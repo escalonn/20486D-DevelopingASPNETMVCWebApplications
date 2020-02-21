@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ElectricStore.Data;
@@ -7,21 +8,33 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ElectricStore.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly StoreContext _context;
+        private readonly IMemoryCache _memoryCache;
 
-        public ProductsController(StoreContext context)
+        private const string PRODUCT_KEY = "Products";
+
+        public ProductsController(StoreContext context, IMemoryCache memoryCache)
         {
             _context = context;
+            _memoryCache = memoryCache;
         }
 
         public IActionResult Index()
         {
-            return View();
+            if (!_memoryCache.TryGetValue(PRODUCT_KEY, out List<Product> products))
+            {
+                products = _context.Products.ToList();
+                products.ForEach(c => c.LoadedFromDatabase = DateTime.Now);
+                var cacheOptions = new MemoryCacheEntryOptions { Priority = CacheItemPriority.High };
+                _memoryCache.Set(PRODUCT_KEY, products, cacheOptions);
+            }
+            return View(products);
         }
 
         public IActionResult GetByCategory(int id)

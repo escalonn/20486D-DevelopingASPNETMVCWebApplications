@@ -59,7 +59,7 @@ label {
 }
 
 .chat,
-#sendMessageBtn {
+#send-message-btn {
   margin-top: 20px;
 }
 
@@ -67,7 +67,7 @@ label {
   color: #32b27a;
 }
 
-#btnChat {
+#btn-chat {
   display: block;
   margin: 0 auto 10px;
 }

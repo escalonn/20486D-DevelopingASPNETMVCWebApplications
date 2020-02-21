@@ -13,11 +13,13 @@ namespace StateExample
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
             services.AddMvc();
         }
         
         public void Configure(IApplicationBuilder app)
         {
+            app.UseSession();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }

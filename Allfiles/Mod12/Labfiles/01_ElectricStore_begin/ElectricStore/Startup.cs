@@ -1,4 +1,5 @@
-﻿using ElectricStore.Data;
+﻿using System;
+using ElectricStore.Data;
 using ElectricStore.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,18 +15,21 @@ namespace ElectricStore
             services.AddDbContext<StoreContext>(options =>
                  options.UseSqlite("Data Source=electricStore.db"));
 
+            services.AddSession(options => options.IdleTimeout = TimeSpan.FromSeconds(60));
+
             services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, StoreContext storeContext, IHostingEnvironment environment)
         {
-
             storeContext.Database.EnsureDeleted();
             storeContext.Database.EnsureCreated();
 
             app.UseStaticFiles();
 
             app.UseNodeModules(environment.ContentRootPath);
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

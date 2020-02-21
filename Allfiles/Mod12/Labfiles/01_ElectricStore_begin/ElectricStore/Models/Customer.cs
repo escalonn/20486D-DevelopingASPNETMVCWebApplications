@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ElectricStore.Models
 {
@@ -26,13 +23,13 @@ namespace ElectricStore.Models
         [Display(Name = "Phone"), DataType(DataType.PhoneNumber)]
         public int PhoneNumber { get; set; }
 
-        [Required(ErrorMessage = "Please enter your adress")]
+        [Required(ErrorMessage = "Please enter your address")]
         public string Address { get; set; }
 
         public virtual List<CustomersProducts> CustomerProducts { get; set; }
 
         [NotMapped]
-		[Display(Name = "Products List")]
+        [Display(Name = "Products List")]
         public List<int> SelectedProductsList { get; set; }
     }
 }

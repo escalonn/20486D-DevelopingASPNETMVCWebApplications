@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ElectricStore.Data;
 using ElectricStore.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -10,18 +8,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace ElectricStore.Controllers
 {
     public class ProductsController : Controller
     {
-        private StoreContext _context;
-        private IHostingEnvironment _environment;
+        private readonly StoreContext _context;
 
-        public ProductsController(StoreContext context, IHostingEnvironment environment)
+        public ProductsController(StoreContext context)
         {
             _context = context;
-            _environment = environment;
         }
 
         public IActionResult Index()
@@ -29,11 +24,11 @@ namespace ElectricStore.Controllers
             return View();
         }
 
-        public IActionResult GetByCategory(int Id)
+        public IActionResult GetByCategory(int id)
         {
-            var products = _context.Products.Where(c => c.CategoryId == Id);
-            var category = _context.menuCategories.FirstOrDefault(c => c.Id == Id);
-            ViewBag.categoryTitle = category.Name;
+            var products = _context.Products.Where(c => c.CategoryId == id);
+            var category = _context.MenuCategories.FirstOrDefault(c => c.Id == id);
+            ViewBag.CategoryTitle = category.Name;
             return View(products);
         }
 
@@ -57,36 +52,34 @@ namespace ElectricStore.Controllers
             return View(customer);
         }
 
-        private void PopulateProductsList(List<int> selectedProducts = null)
+        private void PopulateProductsList(IEnumerable<int> selectedProducts = null)
         {
-            var products = from p in _context.Products
-                           orderby p.ProductName
-                           select p;
+            var products = _context.Products.OrderBy(p => p.ProductName);
 
-            ViewBag.ProductsList = new MultiSelectList(products.AsNoTracking(), "Id", "ProductName", selectedProducts);
+            ViewBag.ProductsList = new MultiSelectList(
+                items: products.AsNoTracking(),
+                dataValueField: "Id",
+                dataTextField: "ProductName",
+                selectedValues: selectedProducts);
         }
 
-        public IActionResult GetImage(int productId)
+        public IActionResult GetImage(int productId, [FromServices] IHostingEnvironment environment)
         {
-            Product requestedPhoto = _context.Products.SingleOrDefault(i => i.Id == productId);
-            if (requestedPhoto != null)
+            if (_context.Products.FirstOrDefault(i => i.Id == productId) is Product requestedPhoto)
             {
-                string webRootpath = _environment.WebRootPath;
+                string webRootPath = environment.WebRootPath;
                 string folderPath = "\\images\\";
-                string fullPath = webRootpath + folderPath + requestedPhoto.PhotoFileName;
+                string fullPath = webRootPath + folderPath + requestedPhoto.PhotoFileName;
 
-                FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
                 byte[] fileBytes;
-                using (BinaryReader br = new BinaryReader(fileOnDisk))
+                using (var fileOnDisk = new FileStream(fullPath, FileMode.Open))
+                using (var br = new BinaryReader(fileOnDisk))
                 {
                     fileBytes = br.ReadBytes((int)fileOnDisk.Length);
                 }
                 return File(fileBytes, requestedPhoto.ImageMimeType);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
     }
 }

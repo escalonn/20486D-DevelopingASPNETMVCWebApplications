@@ -1,9 +1,5 @@
 ﻿using ElectricStore.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ElectricStore.Data
 {
@@ -15,13 +11,13 @@ namespace ElectricStore.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<MenuCategory> menuCategories { get; set; }
+        public DbSet<MenuCategory> MenuCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             modelBuilder.Entity<CustomersProducts>()
-         .HasKey(c => new { c.ProductId, c.CustomerId });
+                .HasKey(c => new { c.ProductId, c.CustomerId });
 
             modelBuilder.Entity<CustomersProducts>()
                 .HasOne(c => c.Customer)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ElectricStore.Data;
+﻿using ElectricStore.Data;
 using ElectricStore.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +19,7 @@ namespace ElectricStore
 
         public void Configure(IApplicationBuilder app, StoreContext storeContext, IHostingEnvironment environment)
         {
-			
+
             storeContext.Database.EnsureDeleted();
             storeContext.Database.EnsureCreated();
 

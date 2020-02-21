@@ -60,6 +60,7 @@ namespace Library.Controllers
 
         [HttpPost]
         [ActionName("Register")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterPost(
             RegisterViewModel registerModel,
             [FromServices] UserManager<User> userManager,

@@ -24,5 +24,9 @@ namespace CachingExample.Models
                 return BasePrice.ToString($"C2", CultureInfo.GetCultureInfo("en-US"));
             }
         }
+
+        [NotMapped]
+        [Display(Name = "Last retrieved on")]
+        public DateTime LoadedFromDatabase { get; set; }
     }
 }

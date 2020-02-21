@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Chat";
+}
+
+<h2 class="title">
+  <span>Chat with</span>
+  <span class="chat-title">Online Site Visitors</span>
+</h2>
+<div class="chat">
+  <div class="row">
+    <div class="col-2 bcf">
+      <form id="send-message-form">
+        <div class="col-5">
+          Name: <input type="text" id="input-user-name">
+        </div>
+        <div class="col-sm-5">
+          Message: <input type="text" id="input-message">
+        </div>
+        <div class="col-sm-3">
+          <input type="submit" class="btn btn-info" value="Send Message">
+        </div>
+      </form>
+    </div>
+    <div class="col-2 bcs">
+      <ul id="messages-list"></ul>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  <script src="~/node_modules/@@aspnet/signalr/dist/browser/signalr.js"></script>
+  <script src="~/js/chat-hub.js"></script>
+}

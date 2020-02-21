@@ -15,11 +15,29 @@
     <div class="collapse navbar-collapse" id="nav-content">
       <ul class="navbar-nav" id="nav-content">
         <li class="nav-item">
-          <a class="nav-link" href="@Url.Action("Index", controller: "Library")">Library</a>
+          <a class="nav-link" asp-controller="Library" asp-action="Index">Library</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="@Url.Action("GetBooksByGenre", controller: "Library")">Our Books</a>
+          <a class="nav-link" asp-controller="Library" asp-action="GetBooksByGenre">Our Books</a>
         </li>
+        @if (User.IsInRole("Administrator"))
+        {
+          <li class="nav-item">
+            <a class="nav-link" asp-controller="Librarian" asp-action="Index">Workers Portal</a>
+          </li>
+        }
+        @if (User.Identity.IsAuthenticated)
+        {
+          <li class="nav-item">
+            <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
+          </li>
+        }
+        else
+        {
+          <li class="nav-item">
+            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+          </li>
+        }
       </ul>
     </div>
   </nav>

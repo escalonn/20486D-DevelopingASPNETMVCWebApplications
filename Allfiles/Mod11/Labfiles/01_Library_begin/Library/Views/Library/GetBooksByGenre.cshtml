@@ -30,7 +30,7 @@
           @if (item.ImageName != null)
           {
             <div>
-              <img class="img-frame" src="@Url.Action("GetImage", "Library", new { id = item.Id })">
+              <img class="img-frame" src="@Url.Action("GetImage", values: new { id = item.Id })">
             </div>
           }
         </div>

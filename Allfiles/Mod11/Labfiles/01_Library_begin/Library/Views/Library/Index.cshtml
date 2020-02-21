@@ -13,10 +13,11 @@
       <h3>
         @Html.DisplayFor(modelItem => item.Name)
       </h3>
+
       @if (item.ImageName != null)
       {
         <div>
-          <img src="@Url.Action("GetImage", "Library", new { id = item.Id })">
+          <img src="@Url.Action("GetImage", values: new { id = item.Id })">
         </div>
       }
 
@@ -35,15 +36,16 @@
           @Html.DisplayNameFor(modelItem => item.DatePublished)
         </span>
         <span class="display-field">
-          @Html.DisplayFor(model => item.DatePublished)
+          @Html.DisplayFor(modelItem => item.DatePublished)
         </span>
       </div>
+
       <div>
         <span class="display-label">
           @Html.DisplayNameFor(modelItem => item.Available)
         </span>
         <span class="display-field">
-          @Html.DisplayFor(model => item.Available)
+          @Html.DisplayFor(modelItem => item.Available)
         </span>
       </div>
     </div>

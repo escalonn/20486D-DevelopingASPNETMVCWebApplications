@@ -1,10 +1,11 @@
 ﻿using System;
 using Library.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Data
 {
-    public class LibraryContext : DbContext
+    public class LibraryContext : IdentityDbContext<User>
     {
         public LibraryContext(DbContextOptions<LibraryContext> options)
           : base(options)
@@ -17,6 +18,8 @@ namespace Library.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Genre>().HasData(
                 new Genre
                 {

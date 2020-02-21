@@ -59,11 +59,10 @@ namespace Library.Controllers
 
         private void PopulateGenreDropDownList(int? selectedGenre = null)
         {
-            var genres = from b in _context.Genres
-                         orderby b.Name
-                         select b;
+            var genres = _context.Genres.OrderBy(b => b.Name);
 
-            ViewBag.GenreList = new SelectList(genres.AsNoTracking(), "Id", "Name", selectedGenre);
+            ViewBag.GenreList = new SelectList(items: genres.AsNoTracking(), dataValueField: "Id", dataTextField: "Name",
+                selectedValue: selectedGenre);
         }
     }
 }

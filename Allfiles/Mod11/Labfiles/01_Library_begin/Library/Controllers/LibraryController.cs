@@ -21,10 +21,7 @@ namespace Library.Controllers
 
         public IActionResult Index()
         {
-            var booksQuery = from b in _context.Books
-                             where b.Recommended == true
-                             orderby b.Author
-                             select b;
+            var booksQuery = _context.Books.Where(b => b.Recommended).OrderBy(b => b.Author);
 
             return View(booksQuery);
         }
@@ -33,12 +30,11 @@ namespace Library.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var booksGenreQuery = from b in _context.Books
-                                      orderby b.Genre.Name
-                                      select b;
+                var booksGenreQuery = _context.Books.OrderBy(b => b.Genre.Name);
 
                 return View(booksGenreQuery);
             }
+
             return RedirectToAction("Login", "Account");
         }
 

@@ -1,7 +1,9 @@
 ﻿using Library.Data;
 using Library.Middleware;
+using Library.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,15 @@ namespace Library
             services.AddDbContext<LibraryContext>(options =>
                  options.UseSqlite("Data Source=library.db"));
 
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 7;
+                options.Password.RequireUppercase = true;
+                options.User.RequireUniqueEmail = true;
+            })
+                .AddEntityFrameworkStores<LibraryContext>();
+
             services.AddMvc();
         }
 
@@ -31,6 +42,8 @@ namespace Library
             libraryContext.Database.EnsureCreated();
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseNodeModules(env.ContentRootPath);
 

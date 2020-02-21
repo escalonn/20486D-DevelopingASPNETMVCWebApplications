@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Library.Data;
@@ -14,13 +12,11 @@ namespace Library.Controllers
     public class LibraryController : Controller
     {
 
-        private LibraryContext _context;
-        private IHostingEnvironment _environment;
+        private readonly LibraryContext _context;
 
-        public LibraryController(LibraryContext libraryContext, IHostingEnvironment environment)
+        public LibraryController(LibraryContext libraryContext)
         {
             _context = libraryContext;
-            _environment = environment;
         }
 
         public IActionResult Index()
@@ -33,27 +29,26 @@ namespace Library.Controllers
             return View(booksQuery);
         }
 
-        public IActionResult GetBooksByGener()
+        public IActionResult GetBooksByGenre()
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
-                var booksGenerQuery = from b in _context.Books
+                var booksGenreQuery = from b in _context.Books
                                       orderby b.Genre.Name
                                       select b;
 
-                return View(booksGenerQuery);
+                return View(booksGenreQuery);
             }
             return RedirectToAction("Login", "Account");
         }
 
         public IActionResult LendingBook(int id)
         {
-            Book book = _context.Books.FirstOrDefault(b => b.Id == id);
-            if (book == null)
+            if (_context.Books.FirstOrDefault(b => b.Id == id) is Book book)
             {
-                return NotFound();
+                return View(book);
             }
-            return View(book);
+            return NotFound();
         }
 
         [HttpPost, ActionName("LendingBook")]
@@ -61,10 +56,10 @@ namespace Library.Controllers
         {
             var bookToUpdate = _context.Books.FirstOrDefault(b => b.Id == id);
             bookToUpdate.Available = false;
-            if (await TryUpdateModelAsync<Book>(
-                bookToUpdate,
-                "",
-                b => b.Available))
+            if (await TryUpdateModelAsync(
+                model: bookToUpdate,
+                prefix: "",
+                includeExpressions: b => b.Available))
             {
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
@@ -72,40 +67,29 @@ namespace Library.Controllers
             return View(bookToUpdate);
         }
 
-        public IActionResult GetImage(int id)
+        public IActionResult GetImage(int id, [FromServices] IHostingEnvironment environment)
         {
-            Book requestedBook = _context.Books.FirstOrDefault(b => b.Id == id);
-            if (requestedBook != null)
+            if (_context.Books.FirstOrDefault(b => b.Id == id) is Book requestedBook)
             {
-                string webRootpath = _environment.WebRootPath;
+                string webRootPath = environment.WebRootPath;
                 string folderPath = "\\images\\";
-                string fullPath = webRootpath + folderPath + requestedBook.ImageName;
+                string fullPath = webRootPath + folderPath + requestedBook.ImageName;
                 if (System.IO.File.Exists(fullPath))
                 {
-                    FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
+                    var fileOnDisk = new FileStream(fullPath, FileMode.Open);
                     byte[] fileBytes;
-                    using (BinaryReader br = new BinaryReader(fileOnDisk))
+                    using (var br = new BinaryReader(fileOnDisk))
                     {
                         fileBytes = br.ReadBytes((int)fileOnDisk.Length);
                     }
                     return File(fileBytes, requestedBook.ImageMimeType);
                 }
-                else
+                if (requestedBook.PhotoFile.Length > 0)
                 {
-                    if (requestedBook.PhotoFile.Length > 0)
-                    {
-                        return File(requestedBook.PhotoFile, requestedBook.ImageMimeType);
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
+                    return File(requestedBook.PhotoFile, requestedBook.ImageMimeType);
                 }
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
     }
 }

@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Library.Data;
 using Library.Models;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Controllers
 {
     public class LibrarianController : Controller
     {
-        private LibraryContext _context;
+        private readonly LibraryContext _context;
 
         public LibrarianController(LibraryContext libraryContext)
         {
@@ -28,7 +24,7 @@ namespace Library.Controllers
 
         public IActionResult AddBook()
         {
-            PopulateGenerDropDownList();
+            PopulateGenreDropDownList();
             return View();
         }
 
@@ -52,7 +48,7 @@ namespace Library.Controllers
                 }
                 return RedirectToAction(nameof(ThankYou));
             }
-            PopulateGenerDropDownList(book.Genre.Id);
+            PopulateGenreDropDownList(book.Genre.Id);
             return View();
         }
 
@@ -61,13 +57,13 @@ namespace Library.Controllers
             return View();
         }
 
-        private void PopulateGenerDropDownList(int? selectedGener = null)
+        private void PopulateGenreDropDownList(int? selectedGenre = null)
         {
             var genres = from b in _context.Genres
-                        orderby b.Name
-                        select b;
+                         orderby b.Name
+                         select b;
 
-            ViewBag.GenerList = new SelectList(genres.AsNoTracking(), "Id", "Name", selectedGener);
+            ViewBag.GenreList = new SelectList(genres.AsNoTracking(), "Id", "Name", selectedGenre);
         }
     }
 }

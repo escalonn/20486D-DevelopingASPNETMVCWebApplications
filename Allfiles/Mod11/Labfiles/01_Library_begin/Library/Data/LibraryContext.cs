@@ -1,16 +1,13 @@
-﻿using Library.Models;
+﻿using System;
+using Library.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Library.Data
 {
     public class LibraryContext : DbContext
     {
         public LibraryContext(DbContextOptions<LibraryContext> options)
-           : base(options)
+          : base(options)
         {
         }
 
@@ -20,9 +17,6 @@ namespace Library.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-
             modelBuilder.Entity<Genre>().HasData(
                 new Genre
                 {
@@ -68,7 +62,7 @@ namespace Library.Data
                }, new Book
                {
                    Id = 3,
-                   Name = "A Wonderful Story ",
+                   Name = "A Wonderful Story",
                    Author = "Kristin A. McCoy",
                    GenreId = 3,
                    Available = true,

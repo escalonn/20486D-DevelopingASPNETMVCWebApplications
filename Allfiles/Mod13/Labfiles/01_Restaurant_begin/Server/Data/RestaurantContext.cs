@@ -1,9 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Server.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Server.Data
 {
@@ -68,7 +65,7 @@ namespace Server.Data
                {
                    Id = 2,
                    JobTitle = "Waiter",
-                   JobDescription = "Take orders and serve food to Guests in our restaurant.",
+                   JobDescription = "Take orders and serve food to guests in our restaurant.",
                    MinimumAge = 18,
                    PricePerHour = 22
                },
@@ -84,7 +81,7 @@ namespace Server.Data
                {
                    Id = 4,
                    JobTitle = "Bartender",
-                   JobDescription = "Interacting with customers, taking orders and serving drinks",
+                   JobDescription = "Interacting with customers, taking orders and serving drinks.",
                    MinimumAge = 18,
                    PricePerHour = 45
                });

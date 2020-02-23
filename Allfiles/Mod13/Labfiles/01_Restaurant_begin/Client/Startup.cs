@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Client.Middleware;
+﻿using Client.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Client
@@ -26,7 +21,7 @@ namespace Client
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                     name: "RestaurantRoute",
+                    name: "RestaurantRoute",
                     template: "{controller}/{action}/{id?}",
                     defaults: new { controller = "RestaurantBranches", action = "Index" },
                     constraints: new { id = "[0-9]+" });

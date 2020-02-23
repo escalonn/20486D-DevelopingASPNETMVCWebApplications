@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Server.Data;
 using Server.Models;
@@ -14,7 +10,7 @@ namespace Server.Controllers
     [ApiController]
     public class RestaurantWantedAdController : ControllerBase
     {
-        private RestaurantContext _context;
+        private readonly RestaurantContext _context;
 
         public RestaurantWantedAdController(RestaurantContext context)
         {
@@ -24,9 +20,8 @@ namespace Server.Controllers
         [HttpGet]
         public ActionResult<List<EmployeeRequirements>> Get()
         {
-            var requirements = from r in _context.EmployeesRequirements
-                           orderby r.JobTitle
-                           select r;
+            var requirements = _context.EmployeesRequirements
+                .OrderBy(r => r.JobTitle);
             return requirements.ToList();
         }
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Server.Data;
 using Server.Models;
@@ -13,7 +9,7 @@ namespace Server.Controllers
     [ApiController]
     public class JobController : ControllerBase
     {
-        private RestaurantContext _context;
+        private readonly RestaurantContext _context;
 
         public JobController(RestaurantContext context)
         {
@@ -23,13 +19,11 @@ namespace Server.Controllers
         [HttpGet("{id}")]
         public ActionResult<JobApplication> GetById(int id)
         {
-            var apply = _context.JobApplications.FirstOrDefault(p => p.Id == id);
-            if (apply == null)
+            if (_context.JobApplications.FirstOrDefault(p => p.Id == id) is var apply)
             {
-                return NotFound();
+                return apply;
             }
-
-            return apply;
+            return NotFound();
         }
 
         [HttpPost]
@@ -37,7 +31,7 @@ namespace Server.Controllers
         {
             _context.Add(jobApplication);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetById), new { id = jobApplication.Id }, jobApplication);
+            return CreatedAtAction(nameof(GetById), routeValues: new { id = jobApplication.Id }, value: jobApplication);
         }
     }
 }

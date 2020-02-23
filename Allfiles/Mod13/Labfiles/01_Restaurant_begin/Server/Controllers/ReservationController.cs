@@ -30,7 +30,7 @@ namespace Server.Controllers
             return NotFound();
         }
 
-        [HttpPost("{id}")]
+        [HttpPost]
         public ActionResult<OrderTable> Create(OrderTable orderTable)
         {
             _context.Add(orderTable);

@@ -13,6 +13,7 @@ namespace ClientSide
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             services.AddMvc();
         }
 

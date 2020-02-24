@@ -15,6 +15,9 @@ namespace Underwater.Models
         [Display(Name = "Scientific Name")]
         public string ScientificName { get; set; }
 
+        [Display(Name = "Common Name")]
+        public string CommonName { get; set; }
+
         [NotMapped]
         [Display(Name = "Picture")]
         public IFormFile PhotoAvatar { get; set; }

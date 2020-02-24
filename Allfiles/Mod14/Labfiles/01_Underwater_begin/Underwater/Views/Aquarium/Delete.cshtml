@@ -13,7 +13,14 @@
     @if (Model.ImageName != null)
     {
       <div>
-        <img class="photo-display-img" src="@Url.Action("GetImage", controller: "Aquarium", values: new { Id = Model.FishId })" alt="">
+        @if (Model.ImageUrl != null)
+        {
+          <img class="photo-display-img" src="@Model.ImageUrl" alt="">
+        }
+        else
+        {
+          <img class="photo-display-img" src="@Url.Action("GetImage", values: new { id = Model.FishId })" alt="">
+        }
       </div>
     }
     <div>
@@ -38,6 +45,6 @@
   <form asp-action="Delete">
     <input type="hidden" asp-for="FishId">
     <button id="btn-post" type="submit" class="btn btn-outline-primary">Delete</button>
-    <button class="btn btn-secondary" type="button" onclick="location.href='@Url.Action("Index", controller: "Aquarium")'">Back</button>
+    <button class="btn btn-secondary" type="button" onclick="location.href='@Url.Action("Index")'">Back</button>
   </form>
 </div>

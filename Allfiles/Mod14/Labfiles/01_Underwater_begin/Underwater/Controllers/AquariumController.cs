@@ -18,14 +18,14 @@ namespace Underwater.Controllers
             _repository = repository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_repository.GetFishes());
+            return View(await _repository.GetFishesAsync());
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (_repository.GetFishById(id) is Fish fish)
+            if (await _repository.GetFishByIdAsync(id) is Fish fish)
             {
                 return View(fish);
             }
@@ -33,30 +33,30 @@ namespace Underwater.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            PopulateAquariumsDropDownList();
+            await PopulateAquariumsDropDownListAsync();
             return View();
         }
 
         [HttpPost, ActionName("Create")]
-        public IActionResult CreatePost(Fish fish)
+        public async Task<IActionResult> CreatePostAsync(Fish fish)
         {
             if (ModelState.IsValid)
             {
-                _repository.AddFish(fish);
+                await _repository.AddFishAsync(fish);
                 return RedirectToAction(nameof(Index));
             }
-            PopulateAquariumsDropDownList(fish.AquariumId);
+            await PopulateAquariumsDropDownListAsync(fish.AquariumId);
             return View(fish);
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (_repository.GetFishById(id) is Fish fish)
+            if (await _repository.GetFishByIdAsync(id) is Fish fish)
             {
-                PopulateAquariumsDropDownList(fish.AquariumId);
+                await PopulateAquariumsDropDownListAsync(fish.AquariumId);
                 return View(fish);
             }
             return NotFound();
@@ -65,7 +65,7 @@ namespace Underwater.Controllers
         [HttpPost, ActionName("Edit")]
         public async Task<IActionResult> EditPost(int id)
         {
-            Fish fishToUpdate = _repository.GetFishById(id);
+            Fish fishToUpdate = await _repository.GetFishByIdAsync(id);
             bool isUpdated = await TryUpdateModelAsync(fishToUpdate,
                 "",
                 f => f.AquariumId,
@@ -74,17 +74,17 @@ namespace Underwater.Controllers
                 f => f.CommonName);
             if (isUpdated)
             {
-                _repository.SaveChanges();
+                await _repository.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            PopulateAquariumsDropDownList(fishToUpdate.AquariumId);
+            await PopulateAquariumsDropDownListAsync(fishToUpdate.AquariumId);
             return View(fishToUpdate);
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (_repository.GetFishById(id) is Fish fish)
+            if (await _repository.GetFishByIdAsync(id) is Fish fish)
             {
                 return View(fish);
             }
@@ -94,31 +94,33 @@ namespace Underwater.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
-            _repository.RemoveFish(id);
+            _repository.RemoveFishAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private void PopulateAquariumsDropDownList(int? selectedAquarium = null)
+        private async Task PopulateAquariumsDropDownListAsync(int? selectedAquarium = null)
         {
             var aquariums = _repository.GetAquariums();
-            ViewBag.AquariumId = new SelectList(items: aquariums.AsNoTracking(), dataValueField: "AquariumId",
-                dataTextField: "Name", selectedValue: selectedAquarium);
+            var items = await aquariums.AsNoTracking().ToListAsync();
+            ViewBag.AquariumId = new SelectList(items: items, dataValueField: "AquariumId", dataTextField: "Name",
+                selectedValue: selectedAquarium);
         }
 
-        public IActionResult GetImage(int id, [FromServices] IHostingEnvironment environment)
+        public async Task<IActionResult> GetImage(int id, [FromServices] IHostingEnvironment environment)
         {
-            if (_repository.GetFishById(id) is Fish requestedFish)
+            if (await _repository.GetFishByIdAsync(id) is Fish requestedFish)
             {
                 string webRootPath = environment.WebRootPath;
                 string folderPath = @"\images\";
                 string fullPath = webRootPath + folderPath + requestedFish.ImageName;
                 if (System.IO.File.Exists(fullPath))
                 {
-                    var fileOnDisk = new FileStream(fullPath, FileMode.Open);
                     byte[] fileBytes;
-                    using (var br = new BinaryReader(fileOnDisk))
+                    using (var fileOnDisk = new FileStream(fullPath, FileMode.Open))
+                    using (var memoryStream = new MemoryStream())
                     {
-                        fileBytes = br.ReadBytes((int)fileOnDisk.Length);
+                        await fileOnDisk.CopyToAsync(memoryStream);
+                        fileBytes = memoryStream.ToArray();
                     }
                     return File(fileBytes, contentType: requestedFish.ImageMimeType);
                 }

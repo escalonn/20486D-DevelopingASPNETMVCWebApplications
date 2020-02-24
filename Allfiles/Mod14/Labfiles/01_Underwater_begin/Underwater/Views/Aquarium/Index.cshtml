@@ -18,7 +18,14 @@
       @if (item.ImageName != null)
       {
         <div>
-          <img class="photo-display-img" src="@Url.Action("GetImage", controller: "Aquarium", values: new { Id = item.FishId })" alt="">
+          @if (item.ImageUrl != null)
+          {
+            <img class="photo-display-img" src="@item.ImageUrl" alt="">
+          }
+          else
+          {
+            <img class="photo-display-img" src="@Url.Action("GetImage", values: new { id = item.FishId })" alt="">
+          }
         </div>
       }
       <div>

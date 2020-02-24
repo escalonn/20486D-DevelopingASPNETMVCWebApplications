@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Underwater.Models;
 
 namespace Underwater.Repositories
 {
     public interface IUnderwaterRepository
     {
-        IEnumerable<Fish> GetFishes();
-        Fish GetFishById(int id);
-        void AddFish(Fish fish);
-        void RemoveFish(int id);
-        void SaveChanges();
+        Task<IEnumerable<Fish>> GetFishesAsync();
+        Task<Fish> GetFishByIdAsync(int id);
+        Task AddFishAsync(Fish fish);
+        Task RemoveFishAsync(int id);
+        Task SaveChangesAsync();
         IQueryable<Aquarium> GetAquariums();
     }
 }

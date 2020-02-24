@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,28 +11,25 @@ namespace Underwater.Controllers
 {
     public class AquariumController : Controller
     {
-        private IUnderwaterRepository _repository;
-        private IHostingEnvironment _environment;
+        private readonly IUnderwaterRepository _repository;
 
-        public AquariumController(IUnderwaterRepository repository, IHostingEnvironment environment)
+        public AquariumController(IUnderwaterRepository repository)
         {
             _repository = repository;
-            _environment = environment;
         }
 
         public IActionResult Index()
         {
-            return View(_repository.Getfishes());
+            return View(_repository.GetFishes());
         }
 
         public IActionResult Details(int id)
         {
-            var fish = _repository.GetFishById(id);
-            if (fish == null)
+            if (_repository.GetFishById(id) is Fish fish)
             {
-                return NotFound();
+                return View(fish);
             }
-            return View(fish);
+            return NotFound();
         }
 
         [HttpGet]
@@ -60,26 +54,23 @@ namespace Underwater.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            Fish fish = _repository.GetFishById(id);
-            if (fish == null)
+            if (_repository.GetFishById(id) is Fish fish)
             {
-                return NotFound();
+                PopulateAquariumsDropDownList(fish.AquariumId);
+                return View(fish);
             }
-            PopulateAquariumsDropDownList(fish.AquariumId);
-            return View(fish);
+            return NotFound();
         }
 
         [HttpPost, ActionName("Edit")]
         public async Task<IActionResult> EditPost(int id)
         {
-            var fishToUpdate = _repository.GetFishById(id);
-            bool isUpdated = await TryUpdateModelAsync<Fish>(
-                                fishToUpdate,
-                                "",
-                                f => f.AquariumId,
-                                f => f.Name,
-                                f => f.ScientificName
-                               );
+            Fish fishToUpdate = _repository.GetFishById(id);
+            bool isUpdated = await TryUpdateModelAsync(fishToUpdate,
+                "",
+                f => f.AquariumId,
+                f => f.Name,
+                f => f.ScientificName);
             if (isUpdated)
             {
                 _repository.SaveChanges();
@@ -92,12 +83,11 @@ namespace Underwater.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var fish = _repository.GetFishById(id);
-            if (fish == null)
+            if (_repository.GetFishById(id) is Fish fish)
             {
-                return NotFound();
+                return View(fish);
             }
-            return View(fish);
+            return NotFound();
         }
 
         [HttpPost, ActionName("Delete")]
@@ -109,44 +99,34 @@ namespace Underwater.Controllers
 
         private void PopulateAquariumsDropDownList(int? selectedAquarium = null)
         {
-            var aquariums = _repository.PopulateAquariumsDropDownList();
-            ViewBag.AquariumID = new SelectList(aquariums.AsNoTracking(), "AquariumId", "Name", selectedAquarium);
+            var aquariums = _repository.GetAquariums();
+            ViewBag.AquariumId = new SelectList(items: aquariums.AsNoTracking(), dataValueField: "AquariumId",
+                dataTextField: "Name", selectedValue: selectedAquarium);
         }
 
-        public IActionResult GetImage(int id)
+        public IActionResult GetImage(int id, [FromServices] IHostingEnvironment environment)
         {
-            Fish requestedFish = _repository.GetFishById(id);
-            if (requestedFish != null)
+            if (_repository.GetFishById(id) is Fish requestedFish)
             {
-                string webRootpath = _environment.WebRootPath;
-                string folderPath = "\\images\\";
-                string fullPath = webRootpath + folderPath + requestedFish.ImageName;
+                string webRootPath = environment.WebRootPath;
+                string folderPath = @"\images\";
+                string fullPath = webRootPath + folderPath + requestedFish.ImageName;
                 if (System.IO.File.Exists(fullPath))
                 {
-                    FileStream fileOnDisk = new FileStream(fullPath, FileMode.Open);
+                    var fileOnDisk = new FileStream(fullPath, FileMode.Open);
                     byte[] fileBytes;
-                    using (BinaryReader br = new BinaryReader(fileOnDisk))
+                    using (var br = new BinaryReader(fileOnDisk))
                     {
                         fileBytes = br.ReadBytes((int)fileOnDisk.Length);
                     }
-                    return File(fileBytes, requestedFish.ImageMimeType);
+                    return File(fileBytes, contentType: requestedFish.ImageMimeType);
                 }
-                else
+                if (requestedFish.PhotoFile.Length > 0)
                 {
-                    if (requestedFish.PhotoFile.Length > 0)
-                    {
-                        return File(requestedFish.PhotoFile, requestedFish.ImageMimeType);
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
+                    return File(requestedFish.PhotoFile, contentType: requestedFish.ImageMimeType);
                 }
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
     }
 }

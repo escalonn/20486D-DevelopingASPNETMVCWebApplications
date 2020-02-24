@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Underwater.Models;
 
 namespace Underwater.Data
@@ -14,7 +10,7 @@ namespace Underwater.Data
         }
 
         public DbSet<Aquarium> Aquariums { get; set; }
-        public DbSet<Fish> fishes { get; set; }
+        public DbSet<Fish> Fishes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,27 +19,26 @@ namespace Underwater.Data
                {
                    AquariumId = 1,
                    Name = "Fish Aquarium",
-                   Address = "4121  Broadway Street",
-                   Number = 818 - 392 - 0763,
+                   Address = "4121 Broadway Street",
+                   Number = "818-392-0763",
                    Open = true,
                },
                new Aquarium
                {
                    AquariumId = 2,
                    Name = "Ocean Aquarium",
-                   Address = "3219  Central Avenue",
-                   Number = 310 - 643 - 0965,
+                   Address = "3219 Central Avenue",
+                   Number = "310-643-0965",
                    Open = false,
                },
                new Aquarium
                {
                    AquariumId = 3,
                    Name = "Best Aquarium",
-                   Address = "128  Stewart Street",
-                   Number = 336 - 209 - 6822,
+                   Address = "128 Stewart Street",
+                   Number = "336-209-6822",
                    Open = true,
-               }
-               );
+               });
 
             modelBuilder.Entity<Fish>().HasData(
                new Fish
@@ -72,8 +67,7 @@ namespace Underwater.Data
                    ImageMimeType = "image/jpeg",
                    ImageName = "clownfish.jpg",
                    AquariumId = 1
-               }
-               );
+               });
         }
     }
 }

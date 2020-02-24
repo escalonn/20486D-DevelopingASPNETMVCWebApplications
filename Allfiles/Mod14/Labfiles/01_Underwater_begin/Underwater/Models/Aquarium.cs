@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Underwater.Models
 {
@@ -15,7 +12,8 @@ namespace Underwater.Models
 
         public string Address { get; set; }
 
-        public int Number { get; set; }
+        [Required]
+        public string Number { get; set; }
 
         public bool Open { get; set; }
 

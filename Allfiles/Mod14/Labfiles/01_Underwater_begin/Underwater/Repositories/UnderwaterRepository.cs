@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Underwater.Data;
 using Underwater.Models;
 
@@ -11,22 +9,22 @@ namespace Underwater.Repositories
 {
     public class UnderwaterRepository : IUnderwaterRepository
     {
-        private UnderwaterContext _context;
+        private readonly UnderwaterContext _context;
 
         public UnderwaterRepository(UnderwaterContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Fish> Getfishes()
+        public IEnumerable<Fish> GetFishes()
         {
-            return _context.fishes.ToList();
+            return _context.Fishes.ToList();
         }
 
         public Fish GetFishById(int id)
         {
-            return _context.fishes.Include(a => a.Aquarium)
-                 .SingleOrDefault(f => f.FishId == id);
+            return _context.Fishes.Include(a => a.Aquarium)
+                .FirstOrDefault(f => f.FishId == id);
         }
 
         public void AddFish(Fish fish)
@@ -47,8 +45,8 @@ namespace Underwater.Repositories
 
         public void RemoveFish(int id)
         {
-            var fish = _context.fishes.SingleOrDefault(f => f.FishId == id);
-            _context.fishes.Remove(fish);
+            var fish = _context.Fishes.FirstOrDefault(f => f.FishId == id);
+            _context.Fishes.Remove(fish);
             _context.SaveChanges();
         }
 
@@ -57,11 +55,9 @@ namespace Underwater.Repositories
             _context.SaveChanges();
         }
 
-        public IQueryable<Aquarium> PopulateAquariumsDropDownList()
+        public IQueryable<Aquarium> GetAquariums()
         {
-            var aquariumsQuery = from a in _context.Aquariums
-                                orderby a.Name
-                                select a;
+            var aquariumsQuery = _context.Aquariums.OrderBy(a => a.Name);
             return aquariumsQuery;
         }
     }

@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Underwater.Models
 {
@@ -13,14 +9,14 @@ namespace Underwater.Models
         [Key]
         public int FishId { get; set; }
 
-        [Display(Name = "Fish Name:")]
+        [Display(Name = "Fish Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Scientific Name:")]
+        [Display(Name = "Scientific Name")]
         public string ScientificName { get; set; }
 
         [NotMapped]
-        [Display(Name = "Picture:")]
+        [Display(Name = "Picture")]
         public IFormFile PhotoAvatar { get; set; }
 
         public string ImageName { get; set; }
@@ -32,6 +28,6 @@ namespace Underwater.Models
         [Required(ErrorMessage = "Please select an aquarium")]
         public int AquariumId { get; set; }
 
-        public virtual Aquarium Aquarium { get; set; }
+        public Aquarium Aquarium { get; set; }
     }
 }
